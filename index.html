@@ -173,7 +173,7 @@ body.reduce-motion .architectural-floor .booth-pin{box-shadow:none;transform:non
 <button class="service" data-go="attendance"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 12l3 3 5-6"/></svg></span><span><strong>تسجيل الحضور</strong><small>اختر صفة حضورك واطّلع على مسار التسجيل.</small></span><span class="arrow" aria-hidden="true">‹</span></button>
 <button class="service" data-go="guide"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v15M12 5C8 2 4 3 2 4v14c4-1 7-1 10 2 3-3 6-3 10-2V4c-2-1-6-2-10 1z"/></svg></span><span><strong>دليل الزائر</strong><small>برنامج الحفل، الأركان، الاستشارات والمخطط المكاني.</small></span><span class="arrow" aria-hidden="true">‹</span></button>
 <button class="service explore-service" data-go="explore"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3 7 9-5 9 5-9 5-9-5zm0 5 9 5 9-5M3 17l9 5 9-5"/></svg></span><span><strong>استكشف الأركان</strong><small>مخطط تفاعلي شبه ثلاثي الأبعاد وبطاقات لكل ركن.</small></span><span class="arrow" aria-hidden="true">‹</span></button>
-<button class="service" disabled aria-describedby="certnote"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="M8 14l-2 8 6-3 6 3-2-8"/></svg></span><span><strong>إصدار شهادة حضور</strong><small id="certnote">سيتم تفعيل إصدار الشهادات بعد انتهاء الفعالية واعتماد الحضور.</small></span><span class="arrow" aria-hidden="true">🔒</span></button></div></section>
+<button class="service" id="certificate-service" data-go="certificate" disabled aria-describedby="certnote"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="M8 14l-2 8 6-3 6 3-2-8"/></svg></span><span><strong>إصدار شهادة حضور</strong><small id="certnote">سيتم تفعيل إصدار الشهادات بعد انتهاء الفعالية واعتماد الحضور.</small></span><span class="arrow" aria-hidden="true">🔒</span></button></div></section>
 <section id="attendance" hidden><button class="back" data-go="home">رجوع إلى الرئيسية</button><div class="panel"><h1 tabindex="-1" style="font-size:1.5em;margin-top:0">تسجيل الحضور</h1><p class="muted">معاينة هيكل النموذج فقط. لا تدخل بيانات حقيقية؛ حقول البيانات معطلة حتى اعتماد الربط.</p><fieldset><legend>صفة الحضور</legend><div id="roles" role="group" aria-label="خيارات صفة الحضور"></div></fieldset><p id="role-status" class="sr-only" role="status" aria-live="polite"></p><div id="fields" hidden></div><div class="notice"><strong>فحص الربط التجريبي</strong><p>يمكن اختبار الاتصال دون إدخال أي بيانات شخصية.</p><p><a id="health" target="_blank" rel="noopener noreferrer">فتح صفحة التحقق من الاتصال</a></p><form id="testPost" method="post" target="_blank"><input type="hidden" name="action" value="register"><button type="submit" class="back">اختبار استقبال الطلب (بدون بيانات)</button></form></div></div></section>
 <section id="guide" hidden><button class="back" data-go="home">رجوع إلى الرئيسية</button><div class="hero"><p class="kicker">دليل الزائر</p><h1 tabindex="-1">تعرّف على الفعالية</h1><p>برنامج الحفل والمعرض المصاحب</p></div>
 <div class="panel"><h2 tabindex="-1">برنامج الحفل</h2><p class="muted">٩ فقرات · ٢٠ دقيقة إجمالي مدة الفقرات دون الانتقالات</p><ol class="program" id="program"></ol></div>
@@ -198,7 +198,8 @@ body.reduce-motion .architectural-floor .booth-pin{box-shadow:none;transform:non
 <details><summary>الوصف النصي للمخطط المكاني</summary><p>بهو الاستقبال في اليسار، والمدخل الرئيسي أسفله. مدخلا المسرح على الجانب الأيسر وبينهما الخط والتصوير والعزف. الراعيان والبودكاست في أعلى البهو. الأركان الثمانية في الوسط على صفين متقابلين؛ العرضان غير المعتمدين في آخر الصفين جهة المعرض. المعرض في اليمين: التقني والحرفي في الأعلى، والطباعة والرسم والألعاب الترفيهية في الأسفل، والألعاب الإلكترونية في الممر. توزيع أسماء الأركان الستة مؤقت. استخدم البطاقات أدناه لعرض جميع التفاصيل.</p></details>
 </div>
 <div class="panel"><div class="explore-head"><h2>بطاقات الأركان</h2><span class="muted" id="booth-count" role="status"></span></div><p class="muted">اختر مجالًا أو افتح بطاقة أي ركن.</p><div class="booth-filters" id="booth-filters" role="group" aria-label="تصفية الأركان"></div><div id="booths" class="booth-grid"></div></div>
-</section></main>
+</section>
+<section id="certificate" hidden><button class="back" data-go="home">رجوع إلى الرئيسية</button><div class="hero"><h1 tabindex="-1">شهادة الحضور</h1><p>تحميل الشهادة بعد تفعيل الخدمة.</p></div><div class="panel"><p id="certificate-status" role="status">تظهر شهادة الحضور بعد انتهاء الفعالية وتفعيل الخدمة، ولأعضاء اللجان بعد الموافقة.</p><form id="certificate-form" method="post" target="_self"><input type="hidden" name="action" value="certificate"><div class="field"><label for="certificate-token">مفتاح الشهادة الخاص بك</label><input id="certificate-token" name="certificateToken" type="text" dir="ltr" autocomplete="off" autocapitalize="off" spellcheck="false" pattern="[a-f0-9]{64}" maxlength="64" required></div><button class="primary" id="certificate-download" type="submit" disabled>تحميل الشهادة PDF</button></form><button type="button" class="back" id="certificate-clear">إزالة المفتاح من هذا الجهاز</button><p class="muted">يُستخدم المفتاح تلقائيًا عند الرجوع من صفحة التسجيل. لا تشاركه مع أحد؛ يمكن الاحتفاظ به لاستخدام جهاز آخر.</p></div></section></main>
 <dialog id="booth-dialog" class="booth-dialog" aria-labelledby="booth-title" aria-describedby="booth-meta"><div class="booth-dialog-inner"><div class="dialog-top"><h2 id="booth-title" tabindex="-1"></h2><button class="booth-close" id="booth-close" type="button" aria-label="إغلاق بطاقة الركن">إغلاق ×</button></div><p id="booth-meta" class="dialog-meta"></p><div id="booth-content" class="dialog-content"></div><div class="dialog-actions"><button id="booth-read" type="button">استمع إلى البطاقة</button><button id="booth-stop" type="button">إيقاف القراءة</button><button id="booth-prev" type="button">الركن السابق</button><button id="booth-next" type="button">الركن التالي</button></div><p id="booth-audio-status" role="status" class="muted"></p></div></dialog>
 <footer>نسخة تجريبية غير معتمدة للنشر الرسمي · لا تستقبل بيانات حقيقية</footer></div>
 <script>
@@ -211,7 +212,7 @@ const program=[['السلام الملكي – العزف الأوركسترال
 const booths=[["الاستقبال وتسجيل الحضور","تسجيل حضور الزوار باستخدام الباركود.","ركن موحّد لاستقبال الزوار وتسجيل حضورهم.",false],["البودكاست","لقاءات وحوارات قصيرة يجريها أحد الطلاب مع ضيوف المعرض.","يُزوّد الطالب بموضوع اللقاء وأسئلته مسبقًا للتدرّب عليها.",false],["القياس والتشخيص وبرنامج فرط الحركة وتشتت الانتباه","عرض توضيحي للقياس والتقييم ومسارات التشخيص وضوابط أهلية القبول، ونماذج لتنظيم الانتباه والدعم السلوكي الإيجابي.","تعريف الزوار بإجراءات القبول والإحالة والمقاييس المعتمدة، وأساليب الدعم المناسبة لفرط الحركة وتشتت الانتباه.",true],["الإعاقة البصرية","أدوات برايل ووسائل القراءة البديلة والإتاحة.","توضيح دور الوسائل التعليمية في دعم تعلم الطلاب ذوي الإعاقة البصرية، وتقديم الاستشارات في ذات التخصص.",true],["الإعاقة السمعية","وسائل التواصل البصري ولغة الإشارة والمعينات السمعية.","عرض أدوات وأساليب التواصل والدعم التعليمي للطلاب الصم وضعاف السمع، وتقديم الاستشارات في ذات التخصص.",true],["اضطراب طيف التوحد","الجداول البصرية ووسائل التواصل وتنظيم الأنشطة.","عرض نماذج تساعد على تنظيم التعلم والتواصل والتفاعل، وتقديم الاستشارات في ذات التخصص.",true],["صعوبات التعلم وبرنامج يسير التعليمي","نماذج لتكييف الأنشطة وأساليب الدعم التعليمي.","توعية الزوار بأساليب الدعم المناسبة في المدرسة، وتقديم الاستشارات.",true],["النطق (اضطرابات اللغة والكلام)","وسائل تدريب النطق واللغة والتواصل المساند.","تعريف الزوار بوسائل دعم مهارات اللغة والكلام لدى الطلاب.",true],["عرض ١ — قيد الاعتماد","لم يُعتمد اسم المدرسة أو العرض بعد.","مساحة مخصصة لعرض مدرسة أو عرض يُحدد لاحقًا.",false],["عرض ٢ — قيد الاعتماد","لم يُعتمد اسم المدرسة أو العرض بعد.","مساحة مخصصة لعرض مدرسة أو عرض يُحدد لاحقًا.",false],["الركن التقني","تطبيق (ترجمان) وفق الوصف السابق.","يُعرض تطبيق (ترجمان) للزوار؛ تفاصيل محتويات الركن النهائية قيد التحديث.",false],["الركن الحرفي","صناعة الأساور والكتابة على الكاسات ومنتجات يدوية متنوعة.","عرض الأعمال الحرفية والمنتجات اليدوية.",false],["الطباعة ثلاثية الأبعاد","طباعة ألعاب تعليمية ومجسمات وعبارات بمناسبة اليوم العالمي.","عرض أعمال الطباعة للزوار، بالتنسيق مع «برنتلي» وفق الوصف المرفق.",false],["الركن الفني (الرسم)","عرض أعمال الطلاب والرسم الحر والرقمي، مع مساحة حرة للرسم.","عرض المواهب الفنية، وإتاحة مشاركة الطلاب والزوار الراغبين في الرسم.",false],["الألعاب الترفيهية","الألعاب التفاعلية.","ألعاب تفاعلية وأنشطة تعليمية.",false],["الألعاب الإلكترونية","ألعاب إلكترونية ضمن المعرض.","تفاصيل الألعاب قيد الاعتماد.",false],["الراعي ١","مساحة مخصصة للراعي الأول.","اسم الراعي ومحتواه قيد التحديث.",false],["الراعي ٢","مساحة مخصصة للراعي الثاني.","اسم الراعي ومحتواه قيد التحديث.",false],["الخط","مساحة الخط.","تفاصيل النشاط قيد التحديث.",false],["التصوير","مساحة التصوير.","تفاصيل النشاط قيد التحديث.",false],["العزف (البيانو)","عزف البيانو.","تفاصيل المشاركة قيد التحديث.",false],["الضيافة","منطقة الضيافة.","تفاصيل الضيافة قيد التحديث.",false]];
 const boothLayout=[{"group":"lobby","label":"تسجيل الدخول","pos":[17,79,7.2,8]},{"group":"lobby","label":"البودكاست","pos":[22,2,14,15]},{"group":"support","label":"القياس والتشخيص + فرط الحركة","pos":[38,24,7.8,12]},{"group":"special","label":"الإعاقة البصرية","pos":[56,65,7.8,12]},{"group":"special","label":"الإعاقة السمعية","pos":[47,24,7.8,12]},{"group":"special","label":"طيف التوحد","pos":[38,65,7.8,12]},{"group":"support","label":"صعوبات التعلم ويسير","pos":[56,24,7.8,12]},{"group":"special","label":"النطق","pos":[47,65,7.8,12]},{"group":"pending","label":"عرض ١","pos":[65,24,7.8,12]},{"group":"pending","label":"عرض ٢","pos":[65,65,7.8,12]},{"group":"expo","label":"الركن التقني","pos":[75,8,10,28]},{"group":"expo","label":"الركن الحرفي","pos":[89,8,10,28]},{"group":"expo","label":"الطباعة 3D","pos":[75,60,10,14]},{"group":"expo","label":"الرسم","pos":[75,75,10,14]},{"group":"expo","label":"الألعاب الترفيهية","pos":[89,60,10,29]},{"group":"expo","label":"ألعاب إلكترونية","pos":[85.8,44,6,9]},{"group":"pending","label":"الراعي ١","pos":[12,3,6.7,9]},{"group":"pending","label":"الراعي ٢","pos":[5,12,7,10]},{"group":"lobby","label":"الخط","pos":[0.8,33,4.8,9]},{"group":"lobby","label":"التصوير","pos":[0.8,44,5.5,12]},{"group":"lobby","label":"العزف","pos":[0.8,57,4.8,9]},{"group":"lobby","label":"الضيافة","pos":[8,80,7.5,11]}];
 function el(tag,txt,cls){const e=document.createElement(tag);if(txt!=null)e.textContent=txt;if(cls)e.className=cls;return e}
-function go(id){stopSpeech();for(const k of ['home','attendance','guide','explore'])$(k).hidden=k!==id;window.scrollTo(0,0);const h=$(id).querySelector('h1,h2');if(h){h.tabIndex=-1;h.focus({preventScroll:true})}}
+function go(id){stopSpeech();for(const k of ['home','attendance','guide','explore','certificate'])$(k).hidden=k!==id;window.scrollTo(0,0);const h=$(id).querySelector('h1,h2');if(h){h.tabIndex=-1;h.focus({preventScroll:true})}}
 document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
 program.forEach(([name,d],i)=>{const li=el('li');li.append(el('span',String(i+1),'number'),el('span',name),el('span',d,'duration'));$('program').append(li)});
 
@@ -260,57 +261,24 @@ Object.entries(groupNames).forEach(([key,label])=>{
 $('booth-count').textContent=String(booths.length)+' موقعًا';
 function mapMode(flat){$('exhibit-floor').classList.toggle('flat',flat);$('map-flat').setAttribute('aria-pressed',String(flat));$('map-relief').setAttribute('aria-pressed',String(!flat))}
 $('map-flat').onclick=()=>mapMode(true);$('map-relief').onclick=()=>mapMode(false);
-const CONFIG=Object.freeze({endpoint:"https://script.google.com/macros/s/AKfycbx5ALOM8diAyprCPflsz5YulJNqrjjKDfsGcLK5KLdmO3ODcSry8FP5HvqEKqLS7_rStw/exec",registrationOpen:false,disabilityCollection:false,privacyNotice:''});
+const CONFIG=Object.freeze({endpoint:"https://script.google.com/macros/s/AKfycbx5ALOM8diAyprCPflsz5YulJNqrjjKDfsGcLK5KLdmO3ODcSry8FP5HvqEKqLS7_rStw/exec",registrationOpen:false,disabilityCollection:false,privacyNotice:'',certificatesOpen:false});
 const LIVE=CONFIG.registrationOpen&&Boolean(CONFIG.privacyNotice.trim());
 $('health').href=CONFIG.endpoint;$('testPost').action=CONFIG.endpoint;
+$('certificate-form').action=CONFIG.endpoint;
+$('certificate-service').disabled=!CONFIG.certificatesOpen;
+$('certificate-download').disabled=!CONFIG.certificatesOpen;
+const certKey='iddp2026-certificate-token';
+const certFragment=location.hash.match(/^#certificate=([a-f0-9]{64})$/);
+let savedCert='';
+try{if(certFragment){localStorage.setItem(certKey,certFragment[1]);savedCert=certFragment[1]}else{savedCert=localStorage.getItem(certKey)||''}}catch(e){if(certFragment)savedCert=certFragment[1]}
+if(/^[a-f0-9]{64}$/.test(savedCert))$('certificate-token').value=savedCert;
+if(certFragment){history.replaceState(null,'',location.pathname+location.search);if(CONFIG.certificatesOpen)go('certificate')}
+$('certificate-clear').onclick=()=>{try{localStorage.removeItem(certKey)}catch(e){}$('certificate-token').value='';$('certificate-status').textContent='تم مسح المفتاح من هذا الجهاز.'};
+$('certificate-form').addEventListener('submit',e=>{if(!CONFIG.certificatesOpen)e.preventDefault()});
 function field(title,name,options=null,required=true,disabled=!LIVE){const wrap=el('div',null,'field');const label=el('label',title+(required?'':' (اختياري)'));const input=options?el('select'):el('input');input.id='f-'+name;input.name=name;label.htmlFor=input.id;input.disabled=disabled;input.required=required;if(options){const blank=el('option','اختر');blank.value='';input.append(blank);options.forEach(x=>{const o=el('option',x);o.value=x;input.append(o)})}else{input.maxLength=180;input.autocomplete='off';if(disabled)input.placeholder='معطّل في النسخة التجريبية'}wrap.append(label,input);return [wrap,input]}
-function renderAdminPreview(box){
-  const panel=el('div');
-  box.append(panel);
-  panel.append(el('p','معاينة مسار الكادر الإداري فقط؛ لن يُرسل أي إدخال حتى تحديث الربط البرمجي.','muted'));
-  const [rw,rs]=field('الصفة الوظيفية','adminRole',['مدير','منسوبو إدارة التعليم'],true,false);
-  panel.append(rw);
-  const genderBranch=el('div');panel.append(genderBranch);
-  const branch=el('div');panel.append(branch);
-  function renderDetails(gender){
-    branch.replaceChildren();
-    if(!gender||!rs.value)return;
-    const add=(title,key,options=null,disabled=true,hint='')=>{
-      const [w,i]=field(title,key,options,true,disabled);
-      if(hint&&!options)i.placeholder=hint;
-      branch.append(w);return [w,i];
-    };
-    add('الاسم الثلاثي','name',null,true,'أدخل الاسم الثلاثي');
-    const female=gender==='أنثى';
-    if(rs.value==='مدير'){
-      const [tw,ts]=add('نوع الجهة التعليمية','workplaceType',['مدرسة','معهد','مركز'],false);
-      const [ow,oi]=add('اسم الجهة التعليمية','organization',null,true,'أدخل اسم الجهة التعليمية');
-      const preview=el('p','','muted');preview.setAttribute('role','status');branch.append(preview);
-      const update=()=>{
-        const label={'مدرسة':'المدرسة','معهد':'المعهد','مركز':'المركز'}[ts.value];
-        ow.querySelector('label').textContent=label?'اسم '+label:'اسم الجهة التعليمية';
-        oi.placeholder=label?'أدخل اسم '+label:'أدخل اسم الجهة التعليمية';
-        preview.textContent=label?'الاسم في الشهادة: '+(female?'مديرة':'مدير')+' '+label+' / الاسم الثلاثي':'';
-      };
-      ts.addEventListener('change',update);update();
-    }else if(rs.value==='منسوبو إدارة التعليم'){
-      add('المسمى الوظيفي','jobTitle',null,true,'مثال: رئيس قسم، مشرف تربوي');
-      add('اسم الإدارة أو القسم','organization',null,true,'أدخل اسم الإدارة أو القسم');
-      branch.append(el('p','الاسم في الشهادة: المسمى الوظيفي المدخل / الاسم الثلاثي','muted'));
-    }
-  }
-  rs.addEventListener('change',()=>{
-    genderBranch.replaceChildren();branch.replaceChildren();
-    if(!rs.value)return;
-    const [gw,gs]=field('الجنس','gender',['ذكر','أنثى'],true,false);
-    genderBranch.append(gw);
-    gs.addEventListener('change',()=>renderDetails(gs.value));
-  });
-  const b=el('button','التسجيل غير متاح حاليًا','primary');b.type='button';b.disabled=true;panel.append(b);
-}
-function render(role){const box=$('fields');box.replaceChildren();box.hidden=false;if(role===roles[5]){renderAdminPreview(box);return}const f=el('form');f.method='post';f.action=CONFIG.endpoint;f.autocomplete='off';box.append(f);
+function render(role){const box=$('fields');box.replaceChildren();box.hidden=false;const f=el('form');f.method='post';f.action=CONFIG.endpoint;f.autocomplete='off';box.append(f);
 function hidden(name,value){const i=el('input');i.type='hidden';i.name=name;i.value=value;f.append(i);return i}
-hidden('action','register');hidden('role',role);const req=hidden('requestId','');
+hidden('action','register');hidden('role',role);const req=hidden('requestId','');const secret=hidden('certificateToken','');
 const add=(...args)=>{const [w,i]=field(...args);f.append(w);return i};
 const check=(title,name,required)=>{const w=el('div',null,'field choice'),i=el('input'),l=el('label',title);i.type='checkbox';i.name=name;i.value='yes';i.id='f-'+name;i.required=required;i.disabled=!LIVE;l.htmlFor=i.id;w.append(i,l);f.append(w);return i};
 if(role===roles[3]){
@@ -328,18 +296,41 @@ if(role===roles[3]){
   }
   subtype.addEventListener('change',updateTeacherTitle);gs.addEventListener('change',updateTeacherTitle);updateTeacherTitle();
 }
+if(role===roles[5]){
+  const subtype=add('الصفة الوظيفية','adminRole',['مدير','منسوبو إدارة التعليم'],true,false);
+  const [gw,gs]=field('الجنس','gender',['ذكر','أنثى'],true,false);
+  const [tw,ts]=field('نوع الجهة التعليمية','workplaceType',['مدرسة','معهد','مركز'],true,false);
+  const [jw,ji]=field('المسمى الوظيفي','jobTitle',null,true,!LIVE);ji.placeholder='مثال: رئيس قسم، مشرف تربوي';
+  const [ow,oi]=field('اسم الجهة التعليمية','organization',null,true,!LIVE);
+  const preview=el('p','','muted');preview.setAttribute('role','status');
+  f.append(gw,tw,jw,ow,preview);
+  function updateAdmin(reset=false){
+    const active=Boolean(subtype.value),manager=subtype.value==='مدير';
+    gw.hidden=!active;gs.disabled=!active;gs.required=active;
+    if(reset){gs.value='';ts.value='';ji.value='';oi.value=''}
+    const ready=active&&Boolean(gs.value);
+    tw.hidden=!ready||!manager;ts.disabled=tw.hidden;ts.required=!tw.hidden;
+    jw.hidden=!ready||manager;ji.disabled=!LIVE||jw.hidden;ji.required=!jw.hidden;
+    ow.hidden=!ready;oi.disabled=!LIVE||ow.hidden;oi.required=!ow.hidden;
+    const label={'مدرسة':'المدرسة','معهد':'المعهد','مركز':'المركز'}[ts.value];
+    ow.querySelector('label').textContent=manager?(label?'اسم '+label:'اسم الجهة التعليمية'):'اسم الإدارة أو القسم';
+    oi.placeholder=manager?(label?'أدخل اسم '+label:'أدخل اسم الجهة التعليمية'):'أدخل اسم الإدارة أو القسم';
+    preview.textContent=!ready?'':manager?(label?'الاسم في الشهادة: '+(gs.value==='أنثى'?'مديرة':'مدير')+' '+label+' / الاسم الثلاثي':''):'الاسم في الشهادة: المسمى الوظيفي المدخل / الاسم الثلاثي';
+  }
+  subtype.addEventListener('change',()=>updateAdmin(true));gs.addEventListener('change',()=>updateAdmin());ts.addEventListener('change',()=>updateAdmin());updateAdmin();
+}
 const name=add('الاسم الثلاثي','name');name.autocomplete='name';if(role===roles[0])add('اسم المدرسة / المعهد / المركز الذي يدرس فيه ابنك / ابنتك','organization');if(role===roles[1]||role===roles[3]){const org=add(role===roles[3]?'اسم جهة العمل':'اسم المدرسة / المعهد / المركز','organization');if(role===roles[3])org.placeholder='مدرسة – معهد – مركز – أخرى';add('المرحلة التعليمية','level',['رياض الأطفال','الابتدائية','المتوسطة','الثانوية'],true,false);add('نوع التعليم','education',['حكومي','أهلي','عالمي'],true,false)}
 const eligible=role===roles[3]||role===roles[4];
 if(eligible){const m=add('رقم الجوال','mobile');m.type='tel';m.dir='ltr';m.inputMode='tel';m.maxLength=30;m.autocomplete='tel';}
 if(role===roles[4]){add('نوع جهة العمل','workplaceType',['مدرسة','معهد','مركز','إدارة'],true,false);add('اسم جهة العمل','organization')}
-const email=add('البريد الإلكتروني لاستلام الاستبانة'+(eligible?' والشهادة':''),'email',null,eligible);email.type='email';email.dir='ltr';email.inputMode='email';email.maxLength=254;email.autocomplete='email';
+const email=add('البريد الإلكتروني لاستلام الاستبانة','email',null,eligible);email.type='email';email.dir='ltr';email.inputMode='email';email.maxLength=254;email.autocomplete='email';
 check('أوافق على التواصل معي لإرسال استبانة الرضا بعد الفعالية (اختياري).','contactConsent',false);
 if(role===roles[4]){const cat=add('فئة اللجنة','committeeCategory',['اللجنة الرئيسية','اللجان التنظيمية'],true,false);const [w,s]=field('حدد اللجنة التنظيمية','committee',committees,true,false);w.hidden=true;s.disabled=true;f.append(w);cat.addEventListener('change',()=>{w.hidden=cat.value!=='اللجان التنظيمية';s.required=!w.hidden;s.disabled=w.hidden;s.value=''})}
 else if(!LIVE||CONFIG.disabilityCollection){const ans=add('هل أنت من الأشخاص ذوي الإعاقة؟','disabilityStatus',['نعم','لا','أفضل عدم الإفصاح'],true,false);const [w,s]=field('حدد نوع الإعاقة أو الفئة التعليمية','disabilityType',disability,true,false);w.hidden=true;s.disabled=true;f.append(w);ans.addEventListener('change',()=>{w.hidden=ans.value!=='نعم';s.required=!w.hidden;s.disabled=w.hidden;s.value=''})}
 if(role===roles[1])check('أؤكد موافقة ولي الأمر وفق الإجراء المعتمد.','guardianConsent',true);
 if(LIVE)f.append(el('p',CONFIG.privacyNotice,'notice'));check('اطلعت على إشعار الخصوصية المعتمد وأوافق وفق الإجراء المعتمد.','privacyConsent',true);
 const submit=el('button',LIVE?'إرسال وتسجيل الحضور':'التسجيل غير متاح حاليًا','primary');submit.type='submit';submit.disabled=!LIVE;f.append(submit);
-f.addEventListener('submit',e=>{if(!LIVE){e.preventDefault();return}if(name.value.trim().split(/\s+/).length<3){e.preventDefault();name.setCustomValidity('أدخل الاسم الثلاثي');name.reportValidity();return}if(!req.value)req.value=crypto.randomUUID();submit.disabled=true});name.addEventListener('input',()=>name.setCustomValidity(''));window.addEventListener('pageshow',()=>{if(LIVE)submit.disabled=false},{once:true});
+f.addEventListener('submit',e=>{if(!LIVE){e.preventDefault();return}if(name.value.trim().split(/\s+/).length<3){e.preventDefault();name.setCustomValidity('أدخل الاسم الثلاثي');name.reportValidity();return}if(!req.value)req.value=crypto.randomUUID();if(!secret.value)secret.value=Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toString(16).padStart(2,'0')).join('');submit.disabled=true});name.addEventListener('input',()=>name.setCustomValidity(''));window.addEventListener('pageshow',()=>{if(LIVE)submit.disabled=false},{once:true});
 }
 [roles[0],roles[1],roles[2],roles[3],roles[5],roles[4]].forEach(r=>{const b=el('button',r,'role');b.setAttribute('aria-pressed','false');b.addEventListener('click',()=>{document.querySelectorAll('.role').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));render(r);$('role-status').textContent='تم اختيار '+r+'، ظهرت حقول التسجيل أدناه.';const first=$('fields').querySelector('input:not([type=hidden]):not(:disabled),select:not(:disabled)');if(first&&LIVE)first.focus();});$('roles').append(b)});
 
