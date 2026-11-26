@@ -272,7 +272,7 @@ const certFragment=location.hash.match(/^#certificate=([a-f0-9]{64})$/);
 let savedCert='';
 try{if(certFragment){localStorage.setItem(certKey,certFragment[1]);savedCert=certFragment[1]}else{savedCert=localStorage.getItem(certKey)||''}}catch(e){if(certFragment)savedCert=certFragment[1]}
 if(/^[a-f0-9]{64}$/.test(savedCert))$('certificate-token').value=savedCert;
-if(certFragment){history.replaceState(null,'',location.pathname+location.search);if(CONFIG.certificatesOpen)go('certificate')}
+if(certFragment){history.replaceState(null,'',location.pathname+location.search);if(CONFIG.certificatesOpen)window.addEventListener('DOMContentLoaded',()=>go('certificate'),{once:true})}
 $('certificate-clear').onclick=()=>{try{localStorage.removeItem(certKey)}catch(e){}$('certificate-token').value='';$('certificate-status').textContent='تم مسح المفتاح من هذا الجهاز.'};
 $('certificate-form').addEventListener('submit',e=>{if(!CONFIG.certificatesOpen)e.preventDefault()});
 function field(title,name,options=null,required=true,disabled=!LIVE){const wrap=el('div',null,'field');const label=el('label',title+(required?'':' (اختياري)'));const input=options?el('select'):el('input');input.id='f-'+name;input.name=name;label.htmlFor=input.id;input.disabled=disabled;input.required=required;if(options){const blank=el('option','اختر');blank.value='';input.append(blank);options.forEach(x=>{const o=el('option',x);o.value=x;input.append(o)})}else{input.maxLength=180;input.autocomplete='off';if(disabled)input.placeholder='معطّل في النسخة التجريبية'}wrap.append(label,input);return [wrap,input]}
