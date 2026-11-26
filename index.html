@@ -109,41 +109,59 @@ booths.forEach(([name,content,desc,consult])=>{const d=el('details');d.append(el
 const CONFIG=Object.freeze({endpoint:"https://script.google.com/macros/s/AKfycbx5ALOM8diAyprCPflsz5YulJNqrjjKDfsGcLK5KLdmO3ODcSry8FP5HvqEKqLS7_rStw/exec",registrationOpen:false,disabilityCollection:false,privacyNotice:''});
 const LIVE=CONFIG.registrationOpen&&Boolean(CONFIG.privacyNotice.trim());
 $('health').href=CONFIG.endpoint;$('testPost').action=CONFIG.endpoint;
-function field(title,name,options=null,required=true,disabled=!LIVE){const wrap=el('div',null,'field');const label=el('label',title+(required?' (مطلوب)':' (اختياري)'));const input=options?el('select'):el('input');input.id='f-'+name;input.name=name;label.htmlFor=input.id;input.disabled=disabled;input.required=required;if(options){const blank=el('option','اختر');blank.value='';input.append(blank);options.forEach(x=>{const o=el('option',x);o.value=x;input.append(o)})}else{input.maxLength=180;input.autocomplete='off';if(disabled)input.placeholder='معطّل في النسخة التجريبية'}wrap.append(label,input);return [wrap,input]}
+function field(title,name,options=null,required=true,disabled=!LIVE){const wrap=el('div',null,'field');const label=el('label',title+(required?'':' (اختياري)'));const input=options?el('select'):el('input');input.id='f-'+name;input.name=name;label.htmlFor=input.id;input.disabled=disabled;input.required=required;if(options){const blank=el('option','اختر');blank.value='';input.append(blank);options.forEach(x=>{const o=el('option',x);o.value=x;input.append(o)})}else{input.maxLength=180;input.autocomplete='off';if(disabled)input.placeholder='معطّل في النسخة التجريبية'}wrap.append(label,input);return [wrap,input]}
 function renderAdminPreview(box){
   const panel=el('div');
   box.append(panel);
   panel.append(el('p','معاينة مسار الكادر الإداري فقط؛ لن يُرسل أي إدخال حتى تحديث الربط البرمجي.','muted'));
-  const [rw,rs]=field('الصفة الوظيفية','adminRole',['مدير','مديرة','معلم مشرف','معلمة مشرفة','منسوبو إدارة التعليم'],true,false);
+  const [rw,rs]=field('الصفة الوظيفية','adminRole',['مدير','معلم','منسوبو إدارة التعليم'],true,false);
   panel.append(rw);
+  const genderBranch=el('div');panel.append(genderBranch);
   const branch=el('div');panel.append(branch);
-  const refresh=()=>{
+  function renderDetails(gender){
     branch.replaceChildren();
-    if(!rs.value)return;
-    const add=(title,key,options=null,disabled=true)=>{const [w,i]=field(title,key,options,true,disabled);branch.append(w);return [w,i]};
-    add('الاسم الثلاثي','name');
-    if(rs.value==='مدير'||rs.value==='مديرة'){
+    if(!gender||!rs.value)return;
+    const add=(title,key,options=null,disabled=true,hint='')=>{
+      const [w,i]=field(title,key,options,true,disabled);
+      if(hint&&!options)i.placeholder=hint;
+      branch.append(w);return [w,i];
+    };
+    add('الاسم الثلاثي','name',null,true,'أدخل الاسم الثلاثي');
+    const female=gender==='أنثى';
+    if(rs.value==='مدير'){
       const [tw,ts]=add('نوع الجهة التعليمية','workplaceType',['مدرسة','معهد','مركز'],false);
-      const [ow,oi]=add('اسم الجهة التعليمية','organization');
+      const [ow,oi]=add('اسم الجهة التعليمية','organization',null,true,'أدخل اسم الجهة التعليمية');
       const preview=el('p','','muted');preview.setAttribute('role','status');branch.append(preview);
-      const update=()=>{const label={'مدرسة':'المدرسة','معهد':'المعهد','مركز':'المركز'}[ts.value];ow.querySelector('label').textContent=label?'اسم '+label+' (مطلوب)':'اسم الجهة التعليمية (مطلوب)';preview.textContent=label?'الاسم في الشهادة: '+rs.value+' '+label+' / الاسم الثلاثي':'';};ts.addEventListener('change',update);update();
+      const update=()=>{
+        const label={'مدرسة':'المدرسة','معهد':'المعهد','مركز':'المركز'}[ts.value];
+        ow.querySelector('label').textContent=label?'اسم '+label:'اسم الجهة التعليمية';
+        oi.placeholder=label?'أدخل اسم '+label:'أدخل اسم الجهة التعليمية';
+        preview.textContent=label?'الاسم في الشهادة: '+(female?'مديرة':'مدير')+' '+label+' / الاسم الثلاثي':'';
+      };
+      ts.addEventListener('change',update);update();
     }else if(rs.value==='منسوبو إدارة التعليم'){
-      add('المسمى الوظيفي الفعلي','jobTitle');
-      add('اسم الإدارة أو القسم','organization');
+      add('المسمى الوظيفي','jobTitle',null,true,'مثال: رئيس قسم، مشرف تربوي');
+      add('اسم الإدارة أو القسم','organization',null,true,'أدخل اسم الإدارة أو القسم');
       branch.append(el('p','الاسم في الشهادة: المسمى الوظيفي المدخل / الاسم الثلاثي','muted'));
     }else{
-      add('اسم جهة العمل (مدرسة – معهد – مركز – أخرى)','organization');
-      branch.append(el('p','الاسم في الشهادة: '+rs.value+' / الاسم الثلاثي','muted'));
+      add('اسم جهة العمل','organization',null,true,'مدرسة – معهد – مركز – أخرى');
+      branch.append(el('p','الاسم في الشهادة: '+(female?'معلمة مشرفة':'معلم مشرف')+' / الاسم الثلاثي','muted'));
     }
-  };
-  rs.addEventListener('change',refresh);
+  }
+  rs.addEventListener('change',()=>{
+    genderBranch.replaceChildren();branch.replaceChildren();
+    if(!rs.value)return;
+    const [gw,gs]=field('الجنس','gender',['ذكر','أنثى'],true,false);
+    genderBranch.append(gw);
+    gs.addEventListener('change',()=>renderDetails(gs.value));
+  });
   const b=el('button','التسجيل غير متاح حاليًا','primary');b.type='button';b.disabled=true;panel.append(b);
 }
 function render(role){const box=$('fields');box.replaceChildren();box.hidden=false;if(role===roles[5]){renderAdminPreview(box);return}const f=el('form');f.method='post';f.action=CONFIG.endpoint;f.autocomplete='off';box.append(f);
 function hidden(name,value){const i=el('input');i.type='hidden';i.name=name;i.value=value;f.append(i);return i}
 hidden('action','register');hidden('role',role);const req=hidden('requestId','');
 const add=(...args)=>{const [w,i]=field(...args);f.append(w);return i};
-const check=(title,name,required)=>{const w=el('div',null,'field choice'),i=el('input'),l=el('label',title+(required?' (مطلوب)':''));i.type='checkbox';i.name=name;i.value='yes';i.id='f-'+name;i.required=required;i.disabled=!LIVE;l.htmlFor=i.id;w.append(i,l);f.append(w);return i};
+const check=(title,name,required)=>{const w=el('div',null,'field choice'),i=el('input'),l=el('label',title);i.type='checkbox';i.name=name;i.value='yes';i.id='f-'+name;i.required=required;i.disabled=!LIVE;l.htmlFor=i.id;w.append(i,l);f.append(w);return i};
 const name=add('الاسم الثلاثي','name');name.autocomplete='name';if(role===roles[0])add('اسم المدرسة / المعهد / المركز الذي يدرس فيه ابنك / ابنتك','organization');if(role===roles[1]||role===roles[3]){add('اسم المدرسة / المعهد / المركز','organization');add('المرحلة التعليمية','level',['رياض الأطفال','الابتدائية','المتوسطة','الثانوية'],true,false);add('نوع التعليم','education',['حكومي','أهلي','عالمي'],true,false)}
 const eligible=role===roles[3]||role===roles[4];
 if(eligible){const m=add('رقم الجوال','mobile');m.type='tel';m.dir='ltr';m.inputMode='tel';m.maxLength=30;m.autocomplete='tel';}
