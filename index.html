@@ -137,7 +137,7 @@ body.reduce-motion .exhibit-floor,body.reduce-motion .booth-pin{box-shadow:none;
 .floor-landmark.entrance{font-size:.88em;font-weight:bold}
 .architectural-floor .booth-pin{position:absolute;min-height:44px;padding:3px;gap:3px;direction:rtl;border-radius:7px;box-shadow:0 5px 0 #00546b;font-size:clamp(11px,.8em,16px);line-height:1.2;z-index:2}
 .architectural-floor .booth-pin .pin-number{width:21px;height:21px;font-size:11px}
-.architectural-floor .booth-pin .pin-label{font-size:1em;line-height:1.22}
+.architectural-floor .booth-pin .pin-label{font-size:1em;line-height:1.24;width:100%;text-align:center;overflow-wrap:break-word}
 .architectural-floor .booth-pin[data-group="special"],.architectural-floor .booth-pin[data-group="support"],.architectural-floor .booth-pin[data-group="pending"]{background:#7358a5;box-shadow:0 5px 0 #45366d}
 .architectural-floor .booth-pin[data-group="lobby"],.architectural-floor .booth-pin[data-group="expo"]{background:#1673a4}
 .architectural-floor .secondary-game .pin-label{writing-mode:vertical-rl;font-size:.85em}
@@ -247,7 +247,7 @@ $('booth-prev').addEventListener('click',()=>{if(selectedBooth>0){stopSpeech();f
 $('booth-next').addEventListener('click',()=>{if(selectedBooth<booths.length-1){stopSpeech();fillBooth(selectedBooth+1);$('booth-title').focus()}});
 booths.forEach(([name,content,desc,consult],i)=>{
   const p=el('button',null,'booth-pin');p.type='button';p.dataset.group=boothGroups[i];p.setAttribute('aria-label','فتح بطاقة '+name);p.setAttribute('aria-haspopup','dialog');p.setAttribute('aria-pressed','false');
-  p.append(el('span',String(i+1),'pin-number'),el('span',boothLabels[i],'pin-label'));p.addEventListener('click',()=>openBooth(i,p));pins.push(p);
+  p.append(el('span',boothLabels[i],'pin-label'));p.addEventListener('click',()=>openBooth(i,p));pins.push(p);
   const [x,y,w,ht]=boothLayout[i].pos;p.style.left=x+'%';p.style.top=y+'%';p.style.width=w+'%';p.style.height=ht+'%';$('exhibit-floor').append(p);
   if(i===15){const extra=p.cloneNode(true);extra.style.left='96%';extra.style.top='40%';extra.style.width='3.3%';extra.style.height='17%';extra.classList.add('secondary-game');extra.setAttribute('aria-label','فتح بطاقة الألعاب الإلكترونية — الموقع الثاني');extra.addEventListener('click',()=>openBooth(i,extra));$('exhibit-floor').append(extra);}
   const card=el('button',null,'booth-card');card.type='button';card.dataset.group=boothGroups[i];card.setAttribute('aria-haspopup','dialog');
