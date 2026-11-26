@@ -268,7 +268,7 @@ function renderAdminPreview(box){
   const panel=el('div');
   box.append(panel);
   panel.append(el('p','معاينة مسار الكادر الإداري فقط؛ لن يُرسل أي إدخال حتى تحديث الربط البرمجي.','muted'));
-  const [rw,rs]=field('الصفة الوظيفية','adminRole',['مدير','معلم','منسوبو إدارة التعليم'],true,false);
+  const [rw,rs]=field('الصفة الوظيفية','adminRole',['مدير','منسوبو إدارة التعليم'],true,false);
   panel.append(rw);
   const genderBranch=el('div');panel.append(genderBranch);
   const branch=el('div');panel.append(branch);
@@ -297,9 +297,6 @@ function renderAdminPreview(box){
       add('المسمى الوظيفي','jobTitle',null,true,'مثال: رئيس قسم، مشرف تربوي');
       add('اسم الإدارة أو القسم','organization',null,true,'أدخل اسم الإدارة أو القسم');
       branch.append(el('p','الاسم في الشهادة: المسمى الوظيفي المدخل / الاسم الثلاثي','muted'));
-    }else{
-      add('اسم جهة العمل','organization',null,true,'مدرسة – معهد – مركز – أخرى');
-      branch.append(el('p','الاسم في الشهادة: '+(female?'معلمة مشرفة':'معلم مشرف')+' / الاسم الثلاثي','muted'));
     }
   }
   rs.addEventListener('change',()=>{
@@ -316,7 +313,22 @@ function hidden(name,value){const i=el('input');i.type='hidden';i.name=name;i.va
 hidden('action','register');hidden('role',role);const req=hidden('requestId','');
 const add=(...args)=>{const [w,i]=field(...args);f.append(w);return i};
 const check=(title,name,required)=>{const w=el('div',null,'field choice'),i=el('input'),l=el('label',title);i.type='checkbox';i.name=name;i.value='yes';i.id='f-'+name;i.required=required;i.disabled=!LIVE;l.htmlFor=i.id;w.append(i,l);f.append(w);return i};
-const name=add('الاسم الثلاثي','name');name.autocomplete='name';if(role===roles[0])add('اسم المدرسة / المعهد / المركز الذي يدرس فيه ابنك / ابنتك','organization');if(role===roles[1]||role===roles[3]){add('اسم المدرسة / المعهد / المركز','organization');add('المرحلة التعليمية','level',['رياض الأطفال','الابتدائية','المتوسطة','الثانوية'],true,false);add('نوع التعليم','education',['حكومي','أهلي','عالمي'],true,false)}
+if(role===roles[3]){
+  const subtype=add('الصفة الوظيفية','teacherRole',['معلم','معلم مشرف'],true,false);
+  const [gw,gs]=field('الجنس','gender',['ذكر','أنثى'],false,false);
+  gw.querySelector('label').textContent='الجنس';
+  gw.hidden=true;gs.disabled=true;f.append(gw);
+  const preview=el('p','','muted');preview.setAttribute('role','status');preview.hidden=true;f.append(preview);
+  function updateTeacherTitle(){
+    const supervisor=subtype.value==='معلم مشرف';
+    gw.hidden=!supervisor;gs.disabled=!supervisor;gs.required=supervisor;
+    if(!supervisor)gs.value='';
+    preview.hidden=!supervisor||!gs.value;
+    preview.textContent=supervisor&&gs.value?'الاسم في الشهادة: '+(gs.value==='أنثى'?'معلمة مشرفة':'معلم مشرف')+' / الاسم الثلاثي':'';
+  }
+  subtype.addEventListener('change',updateTeacherTitle);gs.addEventListener('change',updateTeacherTitle);updateTeacherTitle();
+}
+const name=add('الاسم الثلاثي','name');name.autocomplete='name';if(role===roles[0])add('اسم المدرسة / المعهد / المركز الذي يدرس فيه ابنك / ابنتك','organization');if(role===roles[1]||role===roles[3]){const org=add(role===roles[3]?'اسم جهة العمل':'اسم المدرسة / المعهد / المركز','organization');if(role===roles[3])org.placeholder='مدرسة – معهد – مركز – أخرى';add('المرحلة التعليمية','level',['رياض الأطفال','الابتدائية','المتوسطة','الثانوية'],true,false);add('نوع التعليم','education',['حكومي','أهلي','عالمي'],true,false)}
 const eligible=role===roles[3]||role===roles[4];
 if(eligible){const m=add('رقم الجوال','mobile');m.type='tel';m.dir='ltr';m.inputMode='tel';m.maxLength=30;m.autocomplete='tel';}
 if(role===roles[4]){add('نوع جهة العمل','workplaceType',['مدرسة','معهد','مركز','إدارة'],true,false);add('اسم جهة العمل','organization')}
@@ -347,7 +359,7 @@ $('reset-access').onclick=()=>{stopSpeech();prefs=defaults();applyPrefs('تمت 
 applyPrefs();
 let speechRun=0;
 function stopSpeech(message=''){speechRun++;if('speechSynthesis' in window)window.speechSynthesis.cancel();$('stop-read').disabled=true;if(message)announce(message)}
-function speechText(){if(boothDialog.open){const b=booths[selectedBooth];return [b[0],b[1],b[2],b[3]?'الاستشارات متاحة حضوريًا داخل الركن. أسماء المختصين قيد الاعتماد.':'', 'الموقع التفصيلي قيد الاعتماد.'].join('. ')}if(!$('explore').hidden)return ['استكشف الأركان. المخطط تصوري غير نهائي. اختر بطاقة الركن لعرض التفاصيل.',...booths.map(b=>b[0])].join('. ');if(!$('attendance').hidden)return 'تسجيل الحضور. اختر صفة حضورك. ولي أمر. طالب أو طالبة. زائر. معلم أو معلمة. الكادر الإداري. فريق لجان الفعالية. تظهر الأسئلة المناسبة بعد اختيار الفئة. التسجيل غير متاح في النسخة التجريبية.';if(!$('guide').hidden)return ['دليل الزائر. برنامج الحفل.',...program.map(x=>x[0]),'أركان المعرض.',...booths.map(x=>x[0]+'. '+x[1]+'. '+x[2]),'المخطط المكاني. المدخل الرئيسي أسفل يسار المخطط. مدخلا المسرح على اليسار وبينهما البيانو. البودكاست والرعاة في أعلى البهو. الأركان الثمانية في الوسط والمعرض في اليمين، ويتضمن الركن التقني والحرفي والطباعة والرسم والألعاب. الاستشارات حضورية داخل الأركان.'].join(' ');return 'اليوم العالمي للأشخاص ذوي الإعاقة. التقدم نحو المستقبل. الخميس الثالث من ديسمبر عام ألفين وستة وعشرين. مسرح إدارة التعليم بمحافظة جدة والمعرض المصاحب. الخدمات: تسجيل الحضور. دليل الزائر. استكشف الأركان. إصدار شهادة حضور، سيتم تفعيل إصدار الشهادات بعد انتهاء الفعالية واعتماد الحضور.'}
+function speechText(){if(boothDialog.open){const b=booths[selectedBooth];return [b[0],b[1],b[2],b[3]?'الاستشارات متاحة حضوريًا داخل الركن. أسماء المختصين قيد الاعتماد.':'', 'الموقع التفصيلي قيد الاعتماد.'].join('. ')}if(!$('explore').hidden)return ['استكشف الأركان. المخطط تصوري غير نهائي. اختر بطاقة الركن لعرض التفاصيل.',...booths.map(b=>b[0])].join('. ');if(!$('attendance').hidden)return 'تسجيل الحضور. اختر صفة حضورك. ولي أمر. طالب أو طالبة. زائر. معلم أو معلمة، ويحدد المسار معلم أو معلم مشرف. الكادر الإداري، ويشمل المدير ومنسوبي إدارة التعليم. فريق لجان الفعالية. تظهر الأسئلة المناسبة بعد اختيار الفئة. التسجيل غير متاح في النسخة التجريبية.';if(!$('guide').hidden)return ['دليل الزائر. برنامج الحفل.',...program.map(x=>x[0]),'أركان المعرض.',...booths.map(x=>x[0]+'. '+x[1]+'. '+x[2]),'المخطط المكاني. المدخل الرئيسي أسفل يسار المخطط. مدخلا المسرح على اليسار وبينهما البيانو. البودكاست والرعاة في أعلى البهو. الأركان الثمانية في الوسط والمعرض في اليمين، ويتضمن الركن التقني والحرفي والطباعة والرسم والألعاب. الاستشارات حضورية داخل الأركان.'].join(' ');return 'اليوم العالمي للأشخاص ذوي الإعاقة. التقدم نحو المستقبل. الخميس الثالث من ديسمبر عام ألفين وستة وعشرين. مسرح إدارة التعليم بمحافظة جدة والمعرض المصاحب. الخدمات: تسجيل الحضور. دليل الزائر. استكشف الأركان. إصدار شهادة حضور، سيتم تفعيل إصدار الشهادات بعد انتهاء الفعالية واعتماد الحضور.'}
 $('read').onclick=()=>{if(!('speechSynthesis' in window)||!('SpeechSynthesisUtterance' in window)){announce('القراءة الصوتية غير مدعومة في هذا المتصفح. استخدم قارئ الشاشة المتاح في جهازك.');return}const voice=window.speechSynthesis.getVoices().find(v=>/^ar(?:-|_)?/i.test(v.lang)&&v.localService===true);if(!voice){announce('لا يتوفر صوت عربي محلي حاليًا. فعّل صوت اللغة العربية في إعدادات جهازك، أو استخدم قارئ الشاشة.');return}stopSpeech();const run=speechRun;const chunks=speechText().match(/[^.!؟]+[.!؟]?/g)||[];let i=0;$('stop-read').disabled=false;announce('بدأت قراءة محتوى الصفحة.');function next(){if(run!==speechRun)return;if(i>=chunks.length){$('stop-read').disabled=true;announce('انتهت القراءة الصوتية.');return}const u=new SpeechSynthesisUtterance(chunks[i++].trim());u.voice=voice;u.lang=voice.lang;u.rate=.88;u.onend=next;u.onerror=()=>{if(run===speechRun)stopSpeech('تعذرت القراءة الصوتية. جرّب قارئ الشاشة في جهازك.')};window.speechSynthesis.speak(u)}next()};
 $('stop-read').onclick=()=>stopSpeech('تم إيقاف القراءة الصوتية.');$('booth-read').onclick=()=>$('read').click();$('booth-stop').onclick=()=>stopSpeech('تم إيقاف القراءة الصوتية.');
 window.addEventListener('pagehide',()=>stopSpeech());
