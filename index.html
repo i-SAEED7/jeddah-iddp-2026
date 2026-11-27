@@ -169,8 +169,8 @@ body.reduce-motion .architectural-floor .booth-pin{box-shadow:none;transform:non
 body.contrast .event-hero{background:var(--paper);color:var(--ink);border:2px solid var(--ink)}body.contrast .event-hero .kicker,body.contrast .event-hero .slogan{color:var(--ink)}
 
 /* MOE identity — 2026 approved color file. Event identity limited to original logo. */
-@font-face{font-family:"MOE SKY";src:local("Helvetica Neue W23 for SKY Reg"),local("HelveticaNeueW23forSKY-Reg");font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:"MOE SKY";src:local("Helvetica Neue W23 for SKY Bd"),local("HelveticaNeueW23foSKY-Bd");font-weight:600 900;font-style:normal;font-display:swap}
+@font-face{font-family:"MOE SKY";src:url("/assets/identity/regular.ttf") format("truetype"),local("Helvetica Neue W23 for SKY Reg"),local("HelveticaNeueW23forSKY-Reg");font-weight:400 500;font-style:normal;font-display:swap}
+@font-face{font-family:"MOE SKY";src:url("/assets/identity/bold.ttf") format("truetype"),local("Helvetica Neue W23 for SKY Bd"),local("HelveticaNeueW23foSKY-Bd");font-weight:600 900;font-style:normal;font-display:swap}
 body{font-family:"MOE SKY",Tahoma,Arial,sans-serif}
 :root{--bg:#f5f2fa;--paper:#fff;--ink:#382972;--muted:#5c526f;--accent:#7030a0;--purple:#382972;--line:#dfd8eb;--control:#827493;--focus:#382972;--moe-link:#1673a4}
 body.dark{--bg:#1b142c;--paper:#2a203f;--ink:#f5efff;--muted:#d0c3e4;--accent:#d5b7ff;--purple:#d6c4ff;--line:#59466e;--control:#aa97bf;--focus:#e6d6ff;--moe-link:#8cdaff}
@@ -403,6 +403,8 @@ body.contrast #home .event-hero-copy{padding-top:18px}
 @media(min-width:760px){#home .event-hero{--brand-zone:134px;--blend-zone:44px}#home .event-hero-copy{padding:calc(var(--blend-zone) + 12px) 38px 30px}#home .event-hero .brand-moe{width:140px}#home .event-hero .brand-event{width:190px}}
 @media(max-width:359px){#home .event-hero{--brand-zone:100px;--blend-zone:34px}#home .event-hero-copy{padding-inline:14px}#home .event-hero .brand-lockup{gap:12px;padding-inline:10px}}
 @media(forced-colors:active){#home .event-hero .brand-lockup{background:#fff;forced-color-adjust:none}}
+/* Keep these two deployment assets in subsequent releases. Original authorized source, not stored in public GitHub. Vercel SHA1: regular 44b6dc51b6b8b5466b2e19405a9fdbab44c7792b (89844 bytes); bold 6e9add5c4ba537690fb24aa0fd3a4f177b0fd06e (93360 bytes). */
+body,button,input,select,textarea{font-family:"MOE SKY",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,Tahoma,sans-serif}
 </style></head>
 <body><a class="skip" href="#main">انتقل إلى المحتوى</a><div class="wrap"><header class="top branded-top"><div class="header-info"><strong>بوابة الفعالية ٢٠٢٦</strong><div class="tools" role="group" aria-label="أدوات الوصول السريع"><button id="smaller" aria-label="تصغير الخط">أ−</button><button id="larger" aria-label="تكبير الخط">أ+</button><button id="theme" aria-pressed="false" aria-label="الوضع الداكن" title="الوضع الداكن">◐</button></div></div></header>
 <details class="access-settings" id="access-settings"><summary class="access-summary">
